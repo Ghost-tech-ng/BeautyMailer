@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeautyMail - Professional Email Sender</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .step {
+            display: none;
+            padding: 40px;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .step-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .step-header h2 {
+            font-size: 2rem;
+            color: #4f46e5;
+            margin-bottom: 10px;
+        }
+
+        .step-header p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4f46e5;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.6);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 2px solid #e5e7eb;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .template-card {
+            border: 3px solid #e5e7eb;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .template-card.selected {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        .template-preview {
+            height: 200px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-business {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+        }
+
+        .template-creative {
+            background: linear-gradient(135deg, #db2777, #ec4899);
+            color: white;
+        }
+
+        .template-minimal {
+            background: linear-gradient(135deg, #6b7280, #9ca3af);
+            color: white;
+        }
+
+        .template-modern {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+        }
+
+        .template-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .template-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: #1f2937;
+        }
+
+        .template-info p {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .mail-type-selection {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .mail-type-card {
+            padding: 30px;
+            border: 3px solid #e5e7eb;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .mail-type-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .mail-type-card.selected {
+            border-color: #4f46e5;
+            background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+        }
+
+        .mail-type-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .upload-area:hover {
+            border-color: #4f46e5;
+            background: #f8faff;
+        }
+
+        .upload-area.dragover {
+            border-color: #4f46e5;
+            background: #eef2ff;
+        }
+
+        .progress-container {
+            background: #f3f4f6;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .email-log {
+            max-height: 300px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .email-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .status-success {
+            color: #059669;
+        }
+
+        .status-error {
+            color: #dc2626;
+        }
+
+        .status-pending {
+            color: #d97706;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            gap: 20px;
+        }
+
+        .step-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .step-dot.active {
+            background: #4f46e5;
+            transform: scale(1.2);
+        }
+
+        .preview-container {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .email-preview {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step.active {
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .main-card {
+                border-radius: 16px;
+            }
+            
+            .step {
+                padding: 20px;
+            }
+            
+            .mail-type-selection {
+                grid-template-columns: 1fr;
+            }
+            
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✨ BeautyMail</h1>
+            <p>Professional Email Sender with Beautiful Templates</p>
+        </div>
+
+        <div class="main-card">
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step-dot active" data-step="1"></div>
+                <div class="step-dot" data-step="2"></div>
+                <div class="step-dot" data-step="3"></div>
+                <div class="step-dot" data-step="4"></div>
+                <div class="step-dot" data-step="5"></div>
+            </div>
+
+            <!-- Step 1: SMTP Configuration -->
+            <div class="step active" id="step1">
+                <div class="step-header">
+                    <h2>📧 SMTP Configuration</h2>
+                    <p>Configure your email server settings to get started</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="smtpHost">SMTP Host</label>
+                        <input type="text" id="smtpHost" placeholder="smtp.gmail.com" value="smtp.hostinger.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="smtpPort">SMTP Port</label>
+                        <input type="number" id="smtpPort" placeholder="587" value="587">
+                    </div>
+                    <div class="form-group">
+                        <label for="smtpUsername">Username/Email</label>
+                        <input type="email" id="smtpUsername" placeholder="your-email@domain.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="smtpPassword">Password</label>
+                        <input type="password" id="smtpPassword" placeholder="Your email password">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="smtpSecurity">Security</label>
+                    <select id="smtpSecurity">
+                        <option value="tls">TLS</option>
+                        <option value="ssl">SSL</option>
+                        <option value="none">None</option>
+                    </select>
+                </div>
+
+                <div class="navigation">
+                    <div></div>
+                    <button class="btn btn-primary" onclick="nextStep()">Next: Choose Template 🎨</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Template Selection -->
+            <div class="step" id="step2">
+                <div class="step-header">
+                    <h2>🎨 Choose Email Template</h2>
+                    <p>Select a beautiful template for your emails</p>
+                </div>
+
+                <div class="template-grid">
+                    <div class="template-card" data-template="business">
+                        <div class="template-preview template-business">
+                            <h3>🏢 BUSINESS</h3>
+                            <p>Professional corporate design</p>
+                            <div style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+                                • Clean layout<br>
+                                • Corporate colors<br>
+                                • Professional footer
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <h3>Business Professional</h3>
+                            <p>Perfect for corporate communications and official announcements</p>
+                        </div>
+                    </div>
+
+                    <div class="template-card" data-template="creative">
+                        <div class="template-preview template-creative">
+                            <h3>🎨 CREATIVE</h3>
+                            <p>Vibrant and eye-catching</p>
+                            <div style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+                                • Colorful design<br>
+                                • Modern typography<br>
+                                • Creative elements
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <h3>Creative & Modern</h3>
+                            <p>Ideal for marketing campaigns and creative announcements</p>
+                        </div>
+                    </div>
+
+                    <div class="template-card" data-template="minimal">
+                        <div class="template-preview template-minimal">
+                            <h3>⚪ MINIMAL</h3>
+                            <p>Clean and simple</p>
+                            <div style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+                                • Minimalist design<br>
+                                • Focus on content<br>
+                                • Clean typography
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <h3>Minimal & Clean</h3>
+                            <p>Perfect for newsletters and informational emails</p>
+                        </div>
+                    </div>
+
+                    <div class="template-card" data-template="modern">
+                        <div class="template-preview template-modern">
+                            <h3>🚀 MODERN</h3>
+                            <p>Trendy and fresh</p>
+                            <div style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+                                • Modern gradients<br>
+                                • Interactive elements<br>
+                                • Mobile responsive
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <h3>Modern & Fresh</h3>
+                            <p>Great for tech companies and startup communications</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="btn btn-secondary" onclick="prevStep()">← Previous</button>
+                    <button class="btn btn-primary" onclick="nextStep()" id="templateNext" disabled>Next: Mail Type 📬</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Mail Type Selection -->
+            <div class="step" id="step3">
+                <div class="step-header">
+                    <h2>📬 Mail Type</h2>
+                    <p>Choose between single email or bulk email sending</p>
+                </div>
+
+                <div class="mail-type-selection">
+                    <div class="mail-type-card" data-type="single">
+                        <div class="mail-type-icon">📧</div>
+                        <h3>Single Email</h3>
+                        <p>Send personalized emails to individual recipients</p>
+                        <ul style="text-align: left; margin-top: 15px; color: #6b7280;">
+                            <li>One recipient at a time</li>
+                            <li>Personalized content</li>
+                            <li>Instant sending</li>
+                        </ul>
+                    </div>
+
+                    <div class="mail-type-card" data-type="bulk">
+                        <div class="mail-type-icon">📮</div>
+                        <h3>Bulk Email</h3>
+                        <p>Send emails to multiple recipients from a list</p>
+                        <ul style="text-align: left; margin-top: 15px; color: #6b7280;">
+                            <li>Multiple recipients</li>
+                            <li>Upload email list</li>
+                            <li>Progress tracking</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="btn btn-secondary" onclick="prevStep()">← Previous</button>
+                    <button class="btn btn-primary" onclick="nextStep()" id="typeNext" disabled>Next: Compose Email ✏️</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Email Composition -->
+            <div class="step" id="step4">
+                <div class="step-header">
+                    <h2>✏️ Compose Your Email</h2>
+                    <p id="composeSubtitle">Fill in the details for your email</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="senderName">Your Name/Company</label>
+                        <input type="text" id="senderName" placeholder="Your Company Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="emailSubject">Email Subject</label>
+                        <input type="text" id="emailSubject" placeholder="Enter email subject">
+                    </div>
+                </div>
+
+                <!-- Single Email Fields -->
+                <div id="singleEmailFields">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="recipientName">Recipient Name</label>
+                            <input type="text" id="recipientName" placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipientEmail">Recipient Email</label>
+                            <input type="email" id="recipientEmail" placeholder="john@example.com">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bulk Email Fields -->
+                <div id="bulkEmailFields" style="display: none;">
+                    <div class="form-group">
+                        <label>Email List</label>
+                        <div class="upload-area" id="emailListUpload">
+                            <div style="font-size: 2rem; margin-bottom: 15px;">📄</div>
+                            <h3>Upload Email List</h3>
+                            <p>Drop your .txt file here or click to browse</p>
+                            <p style="margin-top: 10px; color: #6b7280; font-size: 0.9rem;">
+                                Format: one email per line<br>
+                                Example: john@example.com
+                            </p>
+                            <input type="file" id="emailListFile" accept=".txt" style="display: none;">
+                        </div>
+                        <div id="emailListPreview" style="display: none; margin-top: 15px;"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Company Logo</label>
+                    <div class="upload-area" id="logoUpload">
+                        <div style="font-size: 2rem; margin-bottom: 15px;">🖼️</div>
+                        <h3>Upload Company Logo</h3>
+                        <p>Drop your logo here or click to browse</p>
+                        <p style="margin-top: 10px; color: #6b7280; font-size: 0.9rem;">
+                            Supports: JPG, PNG, GIF (Max 5MB)
+                        </p>
+                        <input type="file" id="logoFile" accept="image/*" style="display: none;">
+                    </div>
+                    <div id="logoPreview" style="display: none; margin-top: 15px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="emailContent">Email Content</label>
+                    <textarea id="emailContent" rows="8" placeholder="Write your email content here..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Attachments (Optional)</label>
+                    <div class="upload-area" id="attachmentUpload">
+                        <div style="font-size: 2rem; margin-bottom: 15px;">📎</div>
+                        <h3>Add Attachments</h3>
+                        <p>Drop files here or click to browse</p>
+                        <p style="margin-top: 10px; color: #6b7280; font-size: 0.9rem;">
+                            Supports: PDF, DOC, DOCX, Images (Max 10MB each)
+                        </p>
+                        <input type="file" id="attachmentFiles" multiple style="display: none;">
+                    </div>
+                    <div id="attachmentPreview" style="display: none; margin-top: 15px;"></div>
+                </div>
+
+                <button class="btn btn-secondary" onclick="showPreview()" style="margin-top: 20px;">👀 Preview Email</button>
+
+                <div id="emailPreviewContainer" class="preview-container" style="display: none;">
+                    <h3 style="margin-bottom: 20px;">Email Preview</h3>
+                    <div class="email-preview" id="emailPreview"></div>
+                </div>
+
+                <div class="navigation">
+                    <button class="btn btn-secondary" onclick="prevStep()">← Previous</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Send Emails 🚀</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Send Emails -->
+            <div class="step" id="step5">
+                <div class="step-header">
+                    <h2>🚀 Sending Emails</h2>
+                    <p id="sendingSubtitle">Your emails are being sent...</p>
+                </div>
+
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p id="progressText">Preparing to send...</p>
+                </div>
+
+                <div class="email-log" id="emailLog"></div>
+
+                <div class="navigation" style="margin-top: 30px;">
+                    <button class="btn btn-secondary" onclick="prevStep()" id="backBtn">← Previous</button>
+                    <button class="btn btn-primary" onclick="startOver()" id="startOverBtn" style="display: none;">✨ Send Another Email</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let selectedTemplate = '';
+        let selectedMailType = '';
+        let emailList = [];
+        let selectedFiles = {
+            logo: null,
+            attachments: [],
+            emailList: null
+        };
+
+        // Step navigation
+        function nextStep() {
+            if (validateCurrentStep()) {
+                if (currentStep < 5) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        function showStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            
+            // Show current step
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            // Update step indicators
+            document.querySelectorAll('.step-dot').forEach((dot, index) => {
+                if (index + 1 <= step) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+
+            // Special handling for step 4
+            if (step === 4) {
+                updateStep4UI();
+            }
+
+            // Start sending process on step 5
+            if (step === 5) {
+                startSendingProcess();
+            }
+        }
+
+        function validateCurrentStep() {
+            switch (currentStep) {
+                case 1:
+                    const host = document.getElementById('smtpHost').value;
+                    const port = document.getElementById('smtpPort').value;
+                    const username = document.getElementById('smtpUsername').value;
+                    const password = document.getElementById('smtpPassword').value;
+                    
+                    if (!host || !port || !username || !password) {
+                        alert('Please fill in all SMTP configuration fields');
+                        return false;
+                    }
+                    return true;
+
+                case 2:
+                    if (!selectedTemplate) {
+                        alert('Please select an email template');
+                        return false;
+                    }
+                    return true;
+
+                case 3:
+                    if (!selectedMailType) {
+                        alert('Please select a mail type');
+                        return false;
+                    }
+                    return true;
+
+                case 4:
+                    const senderName = document.getElementById('senderName').value;
+                    const subject = document.getElementById('emailSubject').value;
+                    const content = document.getElementById('emailContent').value;
+                    
+                    if (!senderName || !subject || !content) {
+                        alert('Please fill in sender name, subject, and email content');
+                        return false;
+                    }
+
+                    if (selectedMailType === 'single') {
+                        const recipientEmail = document.getElementById('recipientEmail').value;
+                        if (!recipientEmail) {
+                            alert('Please enter recipient email');
+                            return false;
+                        }
+                    } else {
+                        if (emailList.length === 0) {
+                            alert('Please upload an email list');
+                            return false;
+                        }
+                    }
+                    return true;
+
+                default:
+                    return true;
+            }
+        }
+
+        // Template selection
+        document.querySelectorAll('.template-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove selection from all cards
+                document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+                
+                // Select this card
+                this.classList.add('selected');
+                selectedTemplate = this.dataset.template;
+                
+                // Enable next button
+                document.getElementById('templateNext').disabled = false;
+            });
+        });
+
+        // Mail type selection
+        document.querySelectorAll('.mail-type-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove selection from all cards
+                document.querySelectorAll('.mail-type-card').forEach(c => c.classList.remove('selected'));
+                
+                // Select this card
+                this.classList.add('selected');
+                selectedMailType = this.dataset.type;
+                
+                // Enable next button
+                document.getElementById('typeNext').disabled = false;
+            });
+        });
+
+        // File upload handlers
+        function setupFileUpload(uploadAreaId, fileInputId, previewId, fileType) {
+            const uploadArea = document.getElementById(uploadAreaId);
+            const fileInput = document.getElementById(fileInputId);
+            const preview = document.getElementById(previewId);
+
+            uploadArea.addEventListener('click', () => fileInput.click());
+
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                handleFileSelection(files, fileType, preview);
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                handleFileSelection(e.target.files, fileType, preview);
+            });
+        }
+
+        function handleFileSelection(files, fileType, preview) {
+            if (fileType === 'logo' && files.length > 0) {
+                const file = files[0];
+                selectedFiles.logo = file;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: white; border-radius: 8px;">
+                            <img src="${e.target.result}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                            <div>
+                                <h4 style="margin: 0; color: #059669;">✓ Logo uploaded successfully</h4>
+                                <p style="margin: 5px 0 0 0; color: #6b7280; font-size: 0.9rem;">${file.name}</p>
+                            </div>
+                            <button onclick="removeFile('logo')" style="margin-left: auto; background: #fee2e2; border: none; padding: 8px; border-radius: 6px; cursor: pointer; color: #dc2626;">✕</button>
+                        </div>
+                    `;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else if (fileType === 'attachments') {
+                selectedFiles.attachments = Array.from(files);
+                
+                let html = '<div style="background: white; border-radius: 8px; padding: 15px;">';
+                html += '<h4 style="margin: 0 0 15px 0; color: #059669;">✓ Files attached successfully</h4>';
+                
+                Array.from(files).forEach((file, index) => {
+                    html += `
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f3f4f6;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="font-size: 1.2rem;">📎</span>
+                                <span style="font-size: 0.9rem;">${file.name}</span>
+                                <span style="font-size: 0.8rem; color: #6b7280;">(${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+                            </div>
+                            <button onclick="removeAttachment(${index})" style="background: #fee2e2; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; color: #dc2626; font-size: 0.8rem;">Remove</button>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                preview.innerHTML = html;
+                preview.style.display = 'block';
+            } else if (fileType === 'emailList' && files.length > 0) {
+                const file = files[0];
+                selectedFiles.emailList = file;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    const emails = content.split('\n').map(email => email.trim()).filter(email => email && isValidEmail(email));
+                    emailList = emails;
+                    
+                    let html = '<div style="background: white; border-radius: 8px; padding: 15px;">';
+                    html += `<h4 style="margin: 0 0 15px 0; color: #059669;">✓ Email list uploaded successfully</h4>`;
+                    html += `<p style="margin: 0 0 10px 0; color: #6b7280;">Found ${emails.length} valid email addresses</p>`;
+                    html += '<div style="max-height: 150px; overflow-y: auto; background: #f9fafb; padding: 10px; border-radius: 6px; font-family: monospace; font-size: 0.85rem;">';
+                    
+                    emails.slice(0, 10).forEach(email => {
+                        html += `<div>${email}</div>`;
+                    });
+                    
+                    if (emails.length > 10) {
+                        html += `<div style="color: #6b7280; font-style: italic;">... and ${emails.length - 10} more</div>`;
+                    }
+                    
+                    html += '</div>';
+                    html += `<button onclick="removeFile('emailList')" style="margin-top: 10px; background: #fee2e2; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; color: #dc2626;">Remove File</button>`;
+                    html += '</div>';
+                    
+                    preview.innerHTML = html;
+                    preview.style.display = 'block';
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        function removeFile(type) {
+            selectedFiles[type] = null;
+            if (type === 'emailList') {
+                emailList = [];
+                document.getElementById('emailListPreview').style.display = 'none';
+            } else {
+                document.getElementById(type === 'logo' ? 'logoPreview' : 'attachmentPreview').style.display = 'none';
+            }
+        }
+
+        function removeAttachment(index) {
+            selectedFiles.attachments.splice(index, 1);
+            if (selectedFiles.attachments.length === 0) {
+                document.getElementById('attachmentPreview').style.display = 'none';
+            } else {
+                // Re-render attachments
+                handleFileSelection(selectedFiles.attachments, 'attachments', document.getElementById('attachmentPreview'));
+            }
+        }
+
+        function isValidEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Update Step 4 UI based on mail type
+        function updateStep4UI() {
+            const singleFields = document.getElementById('singleEmailFields');
+            const bulkFields = document.getElementById('bulkEmailFields');
+            const subtitle = document.getElementById('composeSubtitle');
+
+            if (selectedMailType === 'single') {
+                singleFields.style.display = 'block';
+                bulkFields.style.display = 'none';
+                subtitle.textContent = 'Fill in the details for your single email';
+            } else {
+                singleFields.style.display = 'none';
+                bulkFields.style.display = 'block';
+                subtitle.textContent = 'Upload your email list and compose your bulk email';
+            }
+        }
+
+        // Email preview
+        function showPreview() {
+            const preview = document.getElementById('emailPreview');
+            const container = document.getElementById('emailPreviewContainer');
+            
+            const senderName = document.getElementById('senderName').value || 'Your Company';
+            const subject = document.getElementById('emailSubject').value || 'No Subject';
+            const content = document.getElementById('emailContent').value || 'Your email content will appear here.';
+            const recipientName = document.getElementById('recipientName').value || 'John Doe';
+            
+            let templateHtml = generateEmailTemplate(senderName, recipientName, content, selectedTemplate);
+            
+            preview.innerHTML = templateHtml;
+            container.style.display = 'block';
+            container.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function generateEmailTemplate(senderName, recipientName, content, template) {
+            const logoSrc = selectedFiles.logo ? URL.createObjectURL(selectedFiles.logo) : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iMTAiIGZpbGw9IiM0RjQ2RTUiLz4KPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIwLjNlbSI+TDwvdGV4dD4KPHN2Zz4K';
+            
+            const currentDate = new Date().toLocaleDateString();
+            const formattedContent = content.split('\n').map(p => p.trim()).filter(p => p).map(p => `<p style="margin: 0 0 15px 0; line-height: 1.6;">${p}</p>`).join('');
+            
+            let templateStyles = {
+                business: {
+                    primary: '#1e40af',
+                    secondary: '#3b82f6',
+                    background: '#f8faff',
+                    text: '#1f2937'
+                },
+                creative: {
+                    primary: '#db2777',
+                    secondary: '#ec4899',
+                    background: '#fdf2f8',
+                    text: '#831843'
+                },
+                minimal: {
+                    primary: '#6b7280',
+                    secondary: '#9ca3af',
+                    background: '#f9fafb',
+                    text: '#374151'
+                },
+                modern: {
+                    primary: '#059669',
+                    secondary: '#10b981',
+                    background: '#f0fdf4',
+                    text: '#065f46'
+                }
+            };
+
+            const colors = templateStyles[template] || templateStyles.business;
+
+            return `
+                <div style="max-width: 600px; margin: 0 auto; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;">
+                    <div style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary}); padding: 40px 30px; text-align: center; border-radius: 12px 12px 0 0;">
+                        <img src="${logoSrc}" alt="Logo" style="width: 60px; height: 60px; border-radius: 10px; margin-bottom: 20px; background: white; padding: 8px;">
+                        <h1 style="color: white; margin: 0; font-size: 1.8rem; font-weight: 700;">${senderName}</h1>
+                    </div>
+                    
+                    <div style="background: white; padding: 40px 30px; border-left: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb;">
+                        <h2 style="color: ${colors.primary}; margin: 0 0 10px 0; font-size: 1.1rem;">Hello ${recipientName},</h2>
+                        <div style="color: ${colors.text}; font-size: 1rem; line-height: 1.6;">
+                            ${formattedContent}
+                        </div>
+                        ${selectedFiles.attachments.length > 0 ? `
+                        <div style="margin-top: 30px; padding: 20px; background: ${colors.background}; border-radius: 8px; border-left: 4px solid ${colors.primary};">
+                            <h3 style="margin: 0 0 15px 0; color: ${colors.primary}; font-size: 1rem;">📎 Attachments</h3>
+                            ${selectedFiles.attachments.map(file => `<div style="margin: 5px 0; color: ${colors.text};">• ${file.name}</div>`).join('')}
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div style="background: ${colors.background}; padding: 30px; text-align: center; border-radius: 0 0 12px 12px; border: 1px solid #e5e7eb; border-top: none;">
+                        <p style="margin: 0 0 15px 0; color: ${colors.text}; font-size: 0.9rem;">
+                            Best regards,<br>
+                            <strong>${senderName}</strong>
+                        </p>
+                        <div style="border-top: 1px solid #e5e7eb; padding-top: 20px; margin-top: 20px;">
+                            <p style="margin: 0; color: #6b7280; font-size: 0.8rem;">
+                                This email was sent on ${currentDate}<br>
+                                © ${new Date().getFullYear()} ${senderName}. All rights reserved.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Sending process
+        function startSendingProcess() {
+            document.getElementById('progressContainer').style.display = 'block';
+            document.getElementById('backBtn').style.display = 'none';
+            
+            const emailLog = document.getElementById('emailLog');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            emailLog.innerHTML = '';
+            
+            if (selectedMailType === 'single') {
+                sendSingleEmail();
+            } else {
+                sendBulkEmails();
+            }
+        }
+
+        function sendSingleEmail() {
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const emailLog = document.getElementById('emailLog');
+            const recipientEmail = document.getElementById('recipientEmail').value;
+            
+            progressText.textContent = 'Sending email...';
+            progressFill.style.width = '50%';
+            
+            addLogEntry(recipientEmail, 'pending', 'Preparing email...');
+            
+            // Simulate sending process
+            setTimeout(() => {
+                const formData = new FormData();
+                populateFormData(formData, recipientEmail);
+                
+                fetch('send_email.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        addLogEntry(recipientEmail, 'success', 'Email sent successfully!');
+                        progressFill.style.width = '100%';
+                        progressText.textContent = 'Email sent successfully!';
+                    } else {
+                        addLogEntry(recipientEmail, 'error', `Failed: ${data.message}`);
+                        progressText.textContent = 'Failed to send email';
+                    }
+                    showCompleteButton();
+                })
+                .catch(error => {
+                    addLogEntry(recipientEmail, 'error', `Network error: ${error.message}`);
+                    progressText.textContent = 'Failed to send email';
+                    showCompleteButton();
+                });
+            }, 1000);
+        }
+
+        function sendBulkEmails() {
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const emailLog = document.getElementById('emailLog');
+            
+            let currentIndex = 0;
+            let successCount = 0;
+            let errorCount = 0;
+            
+            function sendNextEmail() {
+                if (currentIndex >= emailList.length) {
+                    progressFill.style.width = '100%';
+                    progressText.textContent = `Completed! ${successCount} sent, ${errorCount} failed`;
+                    showCompleteButton();
+                    return;
+                }
+                
+                const email = emailList[currentIndex];
+                const progress = ((currentIndex + 1) / emailList.length) * 100;
+                
+                progressFill.style.width = `${progress}%`;
+                progressText.textContent = `Sending email ${currentIndex + 1} of ${emailList.length}...`;
+                
+                addLogEntry(email, 'pending', 'Sending...');
+                
+                const formData = new FormData();
+                populateFormData(formData, email);
+                
+                fetch('send_email.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateLogEntry(email, 'success', 'Sent successfully!');
+                        successCount++;
+                    } else {
+                        updateLogEntry(email, 'error', `Failed: ${data.message}`);
+                        errorCount++;
+                    }
+                })
+                .catch(error => {
+                    updateLogEntry(email, 'error', `Network error: ${error.message}`);
+                    errorCount++;
+                })
+                .finally(() => {
+                    currentIndex++;
+                    setTimeout(sendNextEmail, 500); // Delay between emails
+                });
+            }
+            
+            sendNextEmail();
+        }
+
+        function populateFormData(formData, recipientEmail) {
+            formData.append('to_email', recipientEmail);
+            formData.append('user_name', document.getElementById('recipientName')?.value || 'Valued Customer');
+            formData.append('subject', document.getElementById('emailSubject').value);
+            formData.append('company_name', document.getElementById('senderName').value);
+            formData.append('email_content', document.getElementById('emailContent').value);
+            formData.append('email_type', selectedTemplate);
+            
+            // SMTP settings
+            formData.append('smtp_host', document.getElementById('smtpHost').value);
+            formData.append('smtp_port', document.getElementById('smtpPort').value);
+            formData.append('smtp_username', document.getElementById('smtpUsername').value);
+            formData.append('smtp_password', document.getElementById('smtpPassword').value);
+            formData.append('smtp_security', document.getElementById('smtpSecurity').value);
+            
+            // Files
+            if (selectedFiles.logo) {
+                formData.append('profile_picture', selectedFiles.logo);
+            }
+            
+            selectedFiles.attachments.forEach((file, index) => {
+                formData.append('documents[]', file);
+            });
+        }
+
+        function addLogEntry(email, status, message) {
+            const emailLog = document.getElementById('emailLog');
+            const entry = document.createElement('div');
+            entry.className = 'email-status';
+            entry.id = `log-${email.replace(/[@.]/g, '-')}`;
+            
+            const statusIcon = {
+                pending: '⏳',
+                success: '✅',
+                error: '❌'
+            };
+            
+            entry.innerHTML = `
+                <span>${statusIcon[status]}</span>
+                <span style="flex: 1;">${email}</span>
+                <span class="status-${status}">${message}</span>
+            `;
+            
+            emailLog.appendChild(entry);
+            emailLog.scrollTop = emailLog.scrollHeight;
+        }
+
+        function updateLogEntry(email, status, message) {
+            const entry = document.getElementById(`log-${email.replace(/[@.]/g, '-')}`);
+            if (entry) {
+                const statusIcon = {
+                    success: '✅',
+                    error: '❌'
+                };
+                
+                entry.innerHTML = `
+                    <span>${statusIcon[status]}</span>
+                    <span style="flex: 1;">${email}</span>
+                    <span class="status-${status}">${message}</span>
+                `;
+            }
+        }
+
+        function showCompleteButton() {
+            document.getElementById('startOverBtn').style.display = 'block';
+        }
+
+        function startOver() {
+            // Reset all variables
+            currentStep = 1;
+            selectedTemplate = '';
+            selectedMailType = '';
+            emailList = [];
+            selectedFiles = {
+                logo: null,
+                attachments: [],
+                emailList: null
+            };
+            
+            // Reset forms
+            document.querySelectorAll('input, textarea, select').forEach(field => {
+                if (field.type !== 'file') {
+                    field.value = '';
+                }
+            });
+            
+            // Reset UI
+            document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+            document.querySelectorAll('.mail-type-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('templateNext').disabled = true;
+            document.getElementById('typeNext').disabled = true;
+            
+            // Hide previews
+            document.querySelectorAll('[id$="Preview"]').forEach(p => p.style.display = 'none');
+            document.getElementById('emailPreviewContainer').style.display = 'none';
+            document.getElementById('progressContainer').style.display = 'none';
+            
+            // Reset buttons
+            document.getElementById('backBtn').style.display = 'inline-flex';
+            document.getElementById('startOverBtn').style.display = 'none';
+            
+            showStep(1);
+        }
+
+        // Initialize file upload handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            setupFileUpload('logoUpload', 'logoFile', 'logoPreview', 'logo');
+            setupFileUpload('attachmentUpload', 'attachmentFiles', 'attachmentPreview', 'attachments');
+            setupFileUpload('emailListUpload', 'emailListFile', 'emailListPreview', 'emailList');
+            
+            // Set default SMTP values
+            document.getElementById('smtpHost').value = 'smtp.hostinger.com';
+            document.getElementById('smtpPort').value = '587';
+        });
+    </script>
+</body>
+</html>
