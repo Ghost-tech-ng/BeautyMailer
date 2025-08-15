@@ -3,383 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BeautyMail - Professional Email Sender</title>
+    <title>BeautyMail - Professional Email Marketing Platform</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f4c75;
+            --gold: #d4af37;
+            --white: #ffffff;
+            --gray-50: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-600: #525252;
+            --gray-800: #262626;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+        }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
             min-height: 100vh;
-            color: #333;
+            color: var(--gray-800);
+            overflow-x: hidden;
+        }
+
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .background-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 20%, rgba(15, 76, 117, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(-10px, -10px) rotate(0deg); }
+            50% { transform: translate(10px, 10px) rotate(1deg); }
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
+            position: relative;
         }
 
         .header {
             text-align: center;
             margin-bottom: 40px;
-            color: white;
+            color: var(--white);
         }
 
         .header h1 {
-            font-size: 3rem;
+            font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 700;
+            background: linear-gradient(45deg, var(--white), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: -0.02em;
         }
 
         .header p {
             font-size: 1.2rem;
             opacity: 0.9;
+            font-weight: 300;
         }
 
         .main-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            box-shadow: 0 32px 64px rgba(0, 0, 0, 0.2);
             overflow: hidden;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .step {
             display: none;
-            padding: 40px;
+            padding: 48px;
+            min-height: 600px;
         }
 
         .step.active {
             display: block;
+            animation: slideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .step-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .step-header h2 {
-            font-size: 2rem;
-            color: #4f46e5;
-            margin-bottom: 10px;
-        }
-
-        .step-header p {
-            color: #6b7280;
-            font-size: 1.1rem;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #374151;
-            font-size: 0.95rem;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: #fafafa;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #4f46e5;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-
-        .btn {
-            padding: 14px 28px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            color: white;
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.6);
-        }
-
-        .btn-secondary {
-            background: #f3f4f6;
-            color: #374151;
-            border: 2px solid #e5e7eb;
-        }
-
-        .btn-secondary:hover {
-            background: #e5e7eb;
-        }
-
-        .template-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .template-card {
-            border: 3px solid #e5e7eb;
-            border-radius: 16px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .template-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        }
-
-        .template-card.selected {
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
-        }
-
-        .template-preview {
-            height: 200px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .template-business {
-            background: linear-gradient(135deg, #1e40af, #3b82f6);
-            color: white;
-        }
-
-        .template-creative {
-            background: linear-gradient(135deg, #db2777, #ec4899);
-            color: white;
-        }
-
-        .template-minimal {
-            background: linear-gradient(135deg, #6b7280, #9ca3af);
-            color: white;
-        }
-
-        .template-modern {
-            background: linear-gradient(135deg, #059669, #10b981);
-            color: white;
-        }
-
-        .template-info {
-            padding: 20px;
-            text-align: center;
-        }
-
-        .template-info h3 {
-            font-size: 1.3rem;
-            margin-bottom: 8px;
-            color: #1f2937;
-        }
-
-        .template-info p {
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-
-        .mail-type-selection {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .mail-type-card {
-            padding: 30px;
-            border: 3px solid #e5e7eb;
-            border-radius: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .mail-type-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-
-        .mail-type-card.selected {
-            border-color: #4f46e5;
-            background: linear-gradient(135deg, #eef2ff, #e0e7ff);
-        }
-
-        .mail-type-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 20px;
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: white;
-        }
-
-        .upload-area {
-            border: 2px dashed #d1d5db;
-            border-radius: 12px;
-            padding: 40px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #fafafa;
-        }
-
-        .upload-area:hover {
-            border-color: #4f46e5;
-            background: #f8faff;
-        }
-
-        .upload-area.dragover {
-            border-color: #4f46e5;
-            background: #eef2ff;
-        }
-
-        .progress-container {
-            background: #f3f4f6;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e5e7eb;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4f46e5, #7c3aed);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .email-log {
-            max-height: 300px;
-            overflow-y: auto;
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 15px;
-        }
-
-        .email-status {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 0;
-            border-bottom: 1px solid #f3f4f6;
-        }
-
-        .status-success {
-            color: #059669;
-        }
-
-        .status-error {
-            color: #dc2626;
-        }
-
-        .status-pending {
-            color: #d97706;
-        }
-
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-        }
-
-        .step-indicator {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 40px;
-            gap: 20px;
-        }
-
-        .step-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #e5e7eb;
-            transition: all 0.3s ease;
-        }
-
-        .step-dot.active {
-            background: #4f46e5;
-            transform: scale(1.2);
-        }
-
-        .preview-container {
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .email-preview {
-            background: white;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        @keyframes fadeInUp {
+        @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -387,25 +123,457 @@
             }
         }
 
-        .step.active {
-            animation: fadeInUp 0.5s ease;
+        .step-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .step-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .step-header p {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--gray-800);
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--gray-200);
+            border-radius: 16px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--gray-50);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(15, 76, 117, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent);
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--gray-700);
+        }
+
+        .social-links-section {
+            background: var(--gray-50);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 2px solid var(--gray-200);
+        }
+
+        .social-links-section h3 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .social-input {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .facebook { background: #1877f2; }
+        .twitter { background: #1da1f2; }
+        .instagram { background: #e4405f; }
+        .linkedin { background: #0077b5; }
+        .youtube { background: #ff0000; }
+        .website { background: var(--accent); }
+
+        .btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-family: inherit;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            color: var(--white);
+            box-shadow: 0 8px 32px rgba(15, 76, 117, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(15, 76, 117, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-800);
+            border: 2px solid var(--gray-200);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+            transform: translateY(-2px);
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+
+        .template-card {
+            border: 3px solid var(--gray-200);
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--white);
+            position: relative;
+        }
+
+        .template-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent, rgba(212, 175, 55, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .template-card:hover::before {
+            opacity: 1;
+        }
+
+        .template-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .template-card.selected {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .template-preview {
+            height: 220px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+
+        .template-executive {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+        }
+
+        .template-creative {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .template-minimal {
+            background: linear-gradient(135deg, #bdc3c7, #2c3e50);
+        }
+
+        .template-modern {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+        }
+
+        .template-info {
+            padding: 24px;
+            text-align: center;
+        }
+
+        .template-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .template-info p {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .mail-type-selection {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+
+        .mail-type-card {
+            padding: 40px 32px;
+            border: 3px solid var(--gray-200);
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mail-type-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mail-type-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .mail-type-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.1);
+        }
+
+        .mail-type-card.selected {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(15, 76, 117, 0.05), rgba(26, 26, 46, 0.05));
+            transform: translateY(-4px);
+        }
+
+        .mail-type-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 8px 32px rgba(15, 76, 117, 0.3);
+        }
+
+        .upload-area {
+            border: 3px dashed var(--gray-300);
+            border-radius: 16px;
+            padding: 48px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--gray-50);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--accent), var(--gold));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .upload-area:hover::before {
+            opacity: 0.05;
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent);
+            background: rgba(15, 76, 117, 0.02);
+            transform: translateY(-2px);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            gap: 24px;
+        }
+
+        .step-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--gray-300);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .step-dot.active {
+            background: var(--gold);
+            transform: scale(1.3);
+            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.4);
+        }
+
+        .progress-container {
+            background: var(--gray-100);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: var(--gray-200);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--gold));
+            width: 0%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .email-log {
+            max-height: 400px;
+            overflow-y: auto;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .email-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .status-success { color: var(--success); }
+        .status-error { color: var(--error); }
+        .status-pending { color: var(--warning); }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 48px;
+        }
+
+        .preview-container {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        .email-preview {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
         }
 
         @media (max-width: 768px) {
             .container {
-                padding: 10px;
+                padding: 16px;
             }
             
             .header h1 {
-                font-size: 2rem;
-            }
-            
-            .main-card {
-                border-radius: 16px;
+                font-size: 2.5rem;
             }
             
             .step {
-                padding: 20px;
+                padding: 24px;
             }
             
             .mail-type-selection {
@@ -415,14 +583,20 @@
             .template-grid {
                 grid-template-columns: 1fr;
             }
+
+            .social-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="background-animation"></div>
+    
     <div class="container">
         <div class="header">
             <h1>✨ BeautyMail</h1>
-            <p>Professional Email Sender with Beautiful Templates</p>
+            <p>Professional Email Marketing Platform</p>
         </div>
 
         <div class="main-card">
@@ -438,8 +612,8 @@
             <!-- Step 1: SMTP Configuration -->
             <div class="step active" id="step1">
                 <div class="step-header">
-                    <h2>📧 SMTP Configuration</h2>
-                    <p>Configure your email server settings to get started</p>
+                    <h2>🔧 SMTP Setup</h2>
+                    <p>Configure your email server credentials</p>
                 </div>
 
                 <div class="form-grid">
@@ -452,19 +626,19 @@
                         <input type="number" id="smtpPort" placeholder="587" value="587">
                     </div>
                     <div class="form-group">
-                        <label for="smtpUsername">Username/Email</label>
+                        <label for="smtpUsername">Email Address</label>
                         <input type="email" id="smtpUsername" placeholder="your-email@domain.com">
                     </div>
                     <div class="form-group">
-                        <label for="smtpPassword">Password</label>
+                        <label for="smtpPassword">Email Password</label>
                         <input type="password" id="smtpPassword" placeholder="Your email password">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="smtpSecurity">Security</label>
+                    <label for="smtpSecurity">Security Protocol</label>
                     <select id="smtpSecurity">
-                        <option value="tls">TLS</option>
+                        <option value="tls">TLS (Recommended)</option>
                         <option value="ssl">SSL</option>
                         <option value="none">None</option>
                     </select>
@@ -472,94 +646,94 @@
 
                 <div class="navigation">
                     <div></div>
-                    <button class="btn btn-primary" onclick="nextStep()">Next: Choose Template 🎨</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Choose Template →</button>
                 </div>
             </div>
 
             <!-- Step 2: Template Selection -->
             <div class="step" id="step2">
                 <div class="step-header">
-                    <h2>🎨 Choose Email Template</h2>
-                    <p>Select a beautiful template for your emails</p>
+                    <h2>🎨 Email Templates</h2>
+                    <p>Choose a professional template design</p>
                 </div>
 
                 <div class="template-grid">
-                    <div class="template-card" data-template="business">
-                        <div class="template-preview template-business">
-                            <h3>🏢 BUSINESS</h3>
-                            <p>Professional corporate design</p>
-                            <div style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
-                                • Clean layout<br>
-                                • Corporate colors<br>
-                                • Professional footer
+                    <div class="template-card" data-template="executive">
+                        <div class="template-preview template-executive">
+                            <h3>🏢 EXECUTIVE</h3>
+                            <p>Professional corporate identity</p>
+                            <div style="margin-top: 16px; font-size: 0.9rem; opacity: 0.9;">
+                                • Premium design<br>
+                                • Corporate branding<br>
+                                • Executive footer
                             </div>
                         </div>
                         <div class="template-info">
-                            <h3>Business Professional</h3>
-                            <p>Perfect for corporate communications and official announcements</p>
+                            <h3>Executive Professional</h3>
+                            <p>Perfect for corporate communications, official announcements, and executive messaging</p>
                         </div>
                     </div>
 
                     <div class="template-card" data-template="creative">
                         <div class="template-preview template-creative">
                             <h3>🎨 CREATIVE</h3>
-                            <p>Vibrant and eye-catching</p>
-                            <div style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
-                                • Colorful design<br>
-                                • Modern typography<br>
+                            <p>Modern & vibrant design</p>
+                            <div style="margin-top: 16px; font-size: 0.9rem; opacity: 0.9;">
+                                • Gradient backgrounds<br>
+                                • Dynamic layouts<br>
                                 • Creative elements
                             </div>
                         </div>
                         <div class="template-info">
-                            <h3>Creative & Modern</h3>
-                            <p>Ideal for marketing campaigns and creative announcements</p>
+                            <h3>Creative & Dynamic</h3>
+                            <p>Ideal for marketing campaigns, product launches, and creative announcements</p>
                         </div>
                     </div>
 
                     <div class="template-card" data-template="minimal">
                         <div class="template-preview template-minimal">
                             <h3>⚪ MINIMAL</h3>
-                            <p>Clean and simple</p>
-                            <div style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+                            <p>Clean & sophisticated</p>
+                            <div style="margin-top: 16px; font-size: 0.9rem; opacity: 0.9;">
                                 • Minimalist design<br>
-                                • Focus on content<br>
+                                • Content focused<br>
                                 • Clean typography
                             </div>
                         </div>
                         <div class="template-info">
                             <h3>Minimal & Clean</h3>
-                            <p>Perfect for newsletters and informational emails</p>
+                            <p>Perfect for newsletters, updates, and content-focused communications</p>
                         </div>
                     </div>
 
                     <div class="template-card" data-template="modern">
                         <div class="template-preview template-modern">
                             <h3>🚀 MODERN</h3>
-                            <p>Trendy and fresh</p>
-                            <div style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
-                                • Modern gradients<br>
-                                • Interactive elements<br>
-                                • Mobile responsive
+                            <p>Cutting-edge design</p>
+                            <div style="margin-top: 16px; font-size: 0.9rem; opacity: 0.9;">
+                                • Fresh gradients<br>
+                                • Modern aesthetics<br>
+                                • Mobile optimized
                             </div>
                         </div>
                         <div class="template-info">
                             <h3>Modern & Fresh</h3>
-                            <p>Great for tech companies and startup communications</p>
+                            <p>Great for tech companies, startups, and innovative brand communications</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="navigation">
-                    <button class="btn btn-secondary" onclick="prevStep()">← Previous</button>
-                    <button class="btn btn-primary" onclick="nextStep()" id="templateNext" disabled>Next: Mail Type 📬</button>
+                    <button class="btn btn-secondary" onclick="prevStep()">← Back</button>
+                    <button class="btn btn-primary" onclick="nextStep()" id="templateNext" disabled>Email Type →</button>
                 </div>
             </div>
 
             <!-- Step 3: Mail Type Selection -->
             <div class="step" id="step3">
                 <div class="step-header">
-                    <h2>📬 Mail Type</h2>
-                    <p>Choose between single email or bulk email sending</p>
+                    <h2>📬 Email Type</h2>
+                    <p>Choose your sending method</p>
                 </div>
 
                 <div class="mail-type-selection">
@@ -567,46 +741,46 @@
                         <div class="mail-type-icon">📧</div>
                         <h3>Single Email</h3>
                         <p>Send personalized emails to individual recipients</p>
-                        <ul style="text-align: left; margin-top: 15px; color: #6b7280;">
-                            <li>One recipient at a time</li>
-                            <li>Personalized content</li>
-                            <li>Instant sending</li>
+                        <ul style="text-align: left; margin-top: 20px; color: var(--gray-600); list-style: none;">
+                            <li>✓ Personal touch</li>
+                            <li>✓ Individual customization</li>
+                            <li>✓ Instant delivery</li>
                         </ul>
                     </div>
 
                     <div class="mail-type-card" data-type="bulk">
                         <div class="mail-type-icon">📮</div>
                         <h3>Bulk Email</h3>
-                        <p>Send emails to multiple recipients from a list</p>
-                        <ul style="text-align: left; margin-top: 15px; color: #6b7280;">
-                            <li>Multiple recipients</li>
-                            <li>Upload email list</li>
-                            <li>Progress tracking</li>
+                        <p>Send emails to multiple recipients efficiently</p>
+                        <ul style="text-align: left; margin-top: 20px; color: var(--gray-600); list-style: none;">
+                            <li>✓ Mass distribution</li>
+                            <li>✓ Progress tracking</li>
+                            <li>✓ Batch processing</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="navigation">
-                    <button class="btn btn-secondary" onclick="prevStep()">← Previous</button>
-                    <button class="btn btn-primary" onclick="nextStep()" id="typeNext" disabled>Next: Compose Email ✏️</button>
+                    <button class="btn btn-secondary" onclick="prevStep()">← Back</button>
+                    <button class="btn btn-primary" onclick="nextStep()" id="typeNext" disabled>Compose Email →</button>
                 </div>
             </div>
 
             <!-- Step 4: Email Composition -->
             <div class="step" id="step4">
                 <div class="step-header">
-                    <h2>✏️ Compose Your Email</h2>
-                    <p id="composeSubtitle">Fill in the details for your email</p>
+                    <h2>✏️ Compose Email</h2>
+                    <p id="composeSubtitle">Create your professional email</p>
                 </div>
 
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="senderName">Your Name/Company</label>
+                        <label for="senderName">Company/Sender Name</label>
                         <input type="text" id="senderName" placeholder="Your Company Name">
                     </div>
                     <div class="form-group">
                         <label for="emailSubject">Email Subject</label>
-                        <input type="text" id="emailSubject" placeholder="Enter email subject">
+                        <input type="text" id="emailSubject" placeholder="Enter compelling subject line">
                     </div>
                 </div>
 
@@ -627,63 +801,106 @@
                 <!-- Bulk Email Fields -->
                 <div id="bulkEmailFields" style="display: none;">
                     <div class="form-group">
-                        <label>Email List</label>
+                        <label>Email List (.txt file)</label>
                         <div class="upload-area" id="emailListUpload">
-                            <div style="font-size: 2rem; margin-bottom: 15px;">📄</div>
+                            <div style="font-size: 3rem; margin-bottom: 16px;">📋</div>
                             <h3>Upload Email List</h3>
                             <p>Drop your .txt file here or click to browse</p>
-                            <p style="margin-top: 10px; color: #6b7280; font-size: 0.9rem;">
-                                Format: one email per line<br>
-                                Example: john@example.com
+                            <p style="margin-top: 12px; color: var(--gray-600); font-size: 0.9rem;">
+                                Format: one email per line (e.g., john@example.com)
                             </p>
                             <input type="file" id="emailListFile" accept=".txt" style="display: none;">
                         </div>
-                        <div id="emailListPreview" style="display: none; margin-top: 15px;"></div>
+                        <div id="emailListPreview" style="display: none; margin-top: 16px;"></div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Company Logo</label>
                     <div class="upload-area" id="logoUpload">
-                        <div style="font-size: 2rem; margin-bottom: 15px;">🖼️</div>
+                        <div style="font-size: 3rem; margin-bottom: 16px;">🖼️</div>
                         <h3>Upload Company Logo</h3>
                         <p>Drop your logo here or click to browse</p>
-                        <p style="margin-top: 10px; color: #6b7280; font-size: 0.9rem;">
-                            Supports: JPG, PNG, GIF (Max 5MB)
+                        <p style="margin-top: 12px; color: var(--gray-600); font-size: 0.9rem;">
+                            Supports: JPG, PNG, GIF (Max 5MB) - Recommended: 200x200px
                         </p>
                         <input type="file" id="logoFile" accept="image/*" style="display: none;">
                     </div>
-                    <div id="logoPreview" style="display: none; margin-top: 15px;"></div>
+                    <div id="logoPreview" style="display: none; margin-top: 16px;"></div>
+                </div>
+
+                <!-- Social Media Links -->
+                <div class="social-links-section">
+                    <h3>🔗 Social Media Links (Optional)</h3>
+                    <div class="social-grid">
+                        <div class="social-input">
+                            <div class="social-icon facebook">📘</div>
+                            <input type="url" id="facebook" placeholder="Facebook URL" class="form-group input">
+                        </div>
+                        <div class="social-input">
+                            <div class="social-icon twitter">🐦</div>
+                            <input type="url" id="twitter" placeholder="Twitter URL" class="form-group input">
+                        </div>
+                        <div class="social-input">
+                            <div class="social-icon instagram">📷</div>
+                            <input type="url" id="instagram" placeholder="Instagram URL" class="form-group input">
+                        </div>
+                        <div class="social-input">
+                            <div class="social-icon linkedin">💼</div>
+                            <input type="url" id="linkedin" placeholder="LinkedIn URL" class="form-group input">
+                        </div>
+                        <div class="social-input">
+                            <div class="social-icon youtube">📹</div>
+                            <input type="url" id="youtube" placeholder="YouTube URL" class="form-group input">
+                        </div>
+                        <div class="social-input">
+                            <div class="social-icon website">🌐</div>
+                            <input type="url" id="website" placeholder="Website URL" class="form-group input">
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="emailContent">Email Content</label>
-                    <textarea id="emailContent" rows="8" placeholder="Write your email content here..."></textarea>
+                    <textarea id="emailContent" rows="10" placeholder="Write your professional email content here..."></textarea>
                 </div>
 
                 <div class="form-group">
                     <label>Attachments (Optional)</label>
                     <div class="upload-area" id="attachmentUpload">
-                        <div style="font-size: 2rem; margin-bottom: 15px;">📎</div>
+                        <div style="font-size: 3rem; margin-bottom: 16px;">📎</div>
                         <h3>Add Attachments</h3>
                         <p>Drop files here or click to browse</p>
-                        <p style="margin-top: 10px; color: #6b7280; font-size: 0.9rem;">
+                        <p style="margin-top: 12px; color: var(--gray-600); font-size: 0.9rem;">
                             Supports: PDF, DOC, DOCX, Images (Max 10MB each)
                         </p>
                         <input type="file" id="attachmentFiles" multiple style="display: none;">
                     </div>
-                    <div id="attachmentPreview" style="display: none; margin-top: 15px;"></div>
+                    <div id="attachmentPreview" style="display: none; margin-top: 16px;"></div>
+                </div>
+
+                <!-- Email Options -->
+                <div style="background: var(--gray-50); border-radius: 12px; padding: 20px; margin: 24px 0;">
+                    <h3 style="margin-bottom: 16px; color: var(--primary);">📧 Email Options</h3>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="showAutomatedMessage" checked>
+                        <label for="showAutomatedMessage">Include "This is an automated email" disclaimer</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="includeUnsubscribe">
+                        <label for="includeUnsubscribe">Include unsubscribe option (recommended for bulk emails)</label>
+                    </div>
                 </div>
 
                 <button class="btn btn-secondary" onclick="showPreview()" style="margin-top: 20px;">👀 Preview Email</button>
 
                 <div id="emailPreviewContainer" class="preview-container" style="display: none;">
-                    <h3 style="margin-bottom: 20px;">Email Preview</h3>
+                    <h3 style="margin-bottom: 20px; color: var(--primary);">Email Preview</h3>
                     <div class="email-preview" id="emailPreview"></div>
                 </div>
 
                 <div class="navigation">
-                    <button class="btn btn-secondary" onclick="prevStep()">← Previous</button>
+                    <button class="btn btn-secondary" onclick="prevStep()">← Back</button>
                     <button class="btn btn-primary" onclick="nextStep()">Send Emails 🚀</button>
                 </div>
             </div>
@@ -692,7 +909,7 @@
             <div class="step" id="step5">
                 <div class="step-header">
                     <h2>🚀 Sending Emails</h2>
-                    <p id="sendingSubtitle">Your emails are being sent...</p>
+                    <p id="sendingSubtitle">Your emails are being processed...</p>
                 </div>
 
                 <div class="progress-container" id="progressContainer">
@@ -705,7 +922,7 @@
                 <div class="email-log" id="emailLog"></div>
 
                 <div class="navigation" style="margin-top: 30px;">
-                    <button class="btn btn-secondary" onclick="prevStep()" id="backBtn">← Previous</button>
+                    <button class="btn btn-secondary" onclick="prevStep()" id="backBtn">← Back</button>
                     <button class="btn btn-primary" onclick="startOver()" id="startOverBtn" style="display: none;">✨ Send Another Email</button>
                 </div>
             </div>
@@ -827,14 +1044,9 @@
         // Template selection
         document.querySelectorAll('.template-card').forEach(card => {
             card.addEventListener('click', function() {
-                // Remove selection from all cards
                 document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
-                
-                // Select this card
                 this.classList.add('selected');
                 selectedTemplate = this.dataset.template;
-                
-                // Enable next button
                 document.getElementById('templateNext').disabled = false;
             });
         });
@@ -842,14 +1054,9 @@
         // Mail type selection
         document.querySelectorAll('.mail-type-card').forEach(card => {
             card.addEventListener('click', function() {
-                // Remove selection from all cards
                 document.querySelectorAll('.mail-type-card').forEach(c => c.classList.remove('selected'));
-                
-                // Select this card
                 this.classList.add('selected');
                 selectedMailType = this.dataset.type;
-                
-                // Enable next button
                 document.getElementById('typeNext').disabled = false;
             });
         });
@@ -891,13 +1098,14 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     preview.innerHTML = `
-                        <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: white; border-radius: 8px;">
-                            <img src="${e.target.result}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
-                            <div>
-                                <h4 style="margin: 0; color: #059669;">✓ Logo uploaded successfully</h4>
-                                <p style="margin: 5px 0 0 0; color: #6b7280; font-size: 0.9rem;">${file.name}</p>
+                        <div style="display: flex; align-items: center; gap: 15px; padding: 20px; background: var(--white); border-radius: 12px; border: 1px solid var(--gray-200);">
+                            <img src="${e.target.result}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 12px; border: 2px solid var(--gray-200);">
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0; color: var(--success); font-size: 1.1rem;">✓ Logo uploaded successfully</h4>
+                                <p style="margin: 5px 0 0 0; color: var(--gray-600); font-size: 0.9rem;">${file.name}</p>
+                                <p style="margin: 2px 0 0 0; color: var(--gray-500); font-size: 0.8rem;">${(file.size / 1024 / 1024).toFixed(2)} MB</p>
                             </div>
-                            <button onclick="removeFile('logo')" style="margin-left: auto; background: #fee2e2; border: none; padding: 8px; border-radius: 6px; cursor: pointer; color: #dc2626;">✕</button>
+                            <button onclick="removeFile('logo')" style="padding: 8px 12px; background: var(--error); border: none; border-radius: 8px; cursor: pointer; color: white; font-size: 0.9rem;">Remove</button>
                         </div>
                     `;
                     preview.style.display = 'block';
@@ -906,18 +1114,20 @@
             } else if (fileType === 'attachments') {
                 selectedFiles.attachments = Array.from(files);
                 
-                let html = '<div style="background: white; border-radius: 8px; padding: 15px;">';
-                html += '<h4 style="margin: 0 0 15px 0; color: #059669;">✓ Files attached successfully</h4>';
+                let html = '<div style="background: var(--white); border-radius: 12px; padding: 20px; border: 1px solid var(--gray-200);">';
+                html += '<h4 style="margin: 0 0 16px 0; color: var(--success); font-size: 1.1rem;">✓ Files attached successfully</h4>';
                 
                 Array.from(files).forEach((file, index) => {
                     html += `
-                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f3f4f6;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <span style="font-size: 1.2rem;">📎</span>
-                                <span style="font-size: 0.9rem;">${file.name}</span>
-                                <span style="font-size: 0.8rem; color: #6b7280;">(${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--gray-100);">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="font-size: 1.5rem;">📎</span>
+                                <div>
+                                    <div style="font-weight: 500; color: var(--gray-800);">${file.name}</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray-500);">${(file.size / 1024 / 1024).toFixed(2)} MB</div>
+                                </div>
                             </div>
-                            <button onclick="removeAttachment(${index})" style="background: #fee2e2; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; color: #dc2626; font-size: 0.8rem;">Remove</button>
+                            <button onclick="removeAttachment(${index})" style="padding: 6px 10px; background: var(--error); border: none; border-radius: 6px; cursor: pointer; color: white; font-size: 0.8rem;">Remove</button>
                         </div>
                     `;
                 });
@@ -935,21 +1145,21 @@
                     const emails = content.split('\n').map(email => email.trim()).filter(email => email && isValidEmail(email));
                     emailList = emails;
                     
-                    let html = '<div style="background: white; border-radius: 8px; padding: 15px;">';
-                    html += `<h4 style="margin: 0 0 15px 0; color: #059669;">✓ Email list uploaded successfully</h4>`;
-                    html += `<p style="margin: 0 0 10px 0; color: #6b7280;">Found ${emails.length} valid email addresses</p>`;
-                    html += '<div style="max-height: 150px; overflow-y: auto; background: #f9fafb; padding: 10px; border-radius: 6px; font-family: monospace; font-size: 0.85rem;">';
+                    let html = '<div style="background: var(--white); border-radius: 12px; padding: 20px; border: 1px solid var(--gray-200);">';
+                    html += `<h4 style="margin: 0 0 16px 0; color: var(--success); font-size: 1.1rem;">✓ Email list uploaded successfully</h4>`;
+                    html += `<p style="margin: 0 0 12px 0; color: var(--gray-600);">Found ${emails.length} valid email addresses</p>`;
+                    html += '<div style="max-height: 200px; overflow-y: auto; background: var(--gray-50); padding: 12px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid var(--gray-200);">';
                     
                     emails.slice(0, 10).forEach(email => {
-                        html += `<div>${email}</div>`;
+                        html += `<div style="padding: 2px 0;">${email}</div>`;
                     });
                     
                     if (emails.length > 10) {
-                        html += `<div style="color: #6b7280; font-style: italic;">... and ${emails.length - 10} more</div>`;
+                        html += `<div style="color: var(--gray-500); font-style: italic; padding: 4px 0;">... and ${emails.length - 10} more</div>`;
                     }
                     
                     html += '</div>';
-                    html += `<button onclick="removeFile('emailList')" style="margin-top: 10px; background: #fee2e2; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; color: #dc2626;">Remove File</button>`;
+                    html += `<button onclick="removeFile('emailList')" style="margin-top: 12px; padding: 8px 16px; background: var(--error); border: none; border-radius: 8px; cursor: pointer; color: white;">Remove File</button>`;
                     html += '</div>';
                     
                     preview.innerHTML = html;
@@ -974,7 +1184,6 @@
             if (selectedFiles.attachments.length === 0) {
                 document.getElementById('attachmentPreview').style.display = 'none';
             } else {
-                // Re-render attachments
                 handleFileSelection(selectedFiles.attachments, 'attachments', document.getElementById('attachmentPreview'));
             }
         }
@@ -984,7 +1193,6 @@
             return re.test(email);
         }
 
-        // Update Step 4 UI based on mail type
         function updateStep4UI() {
             const singleFields = document.getElementById('singleEmailFields');
             const bulkFields = document.getElementById('bulkEmailFields');
@@ -993,7 +1201,7 @@
             if (selectedMailType === 'single') {
                 singleFields.style.display = 'block';
                 bulkFields.style.display = 'none';
-                subtitle.textContent = 'Fill in the details for your single email';
+                subtitle.textContent = 'Create your personalized email';
             } else {
                 singleFields.style.display = 'none';
                 bulkFields.style.display = 'block';
@@ -1001,7 +1209,49 @@
             }
         }
 
-        // Email preview
+        function getSocialMediaHtml() {
+            const socialLinks = {
+                facebook: document.getElementById('facebook').value,
+                twitter: document.getElementById('twitter').value,
+                instagram: document.getElementById('instagram').value,
+                linkedin: document.getElementById('linkedin').value,
+                youtube: document.getElementById('youtube').value,
+                website: document.getElementById('website').value
+            };
+
+            const socialIcons = {
+                facebook: { icon: '📘', color: '#1877f2', name: 'Facebook' },
+                twitter: { icon: '🐦', color: '#1da1f2', name: 'Twitter' },
+                instagram: { icon: '📷', color: '#e4405f', name: 'Instagram' },
+                linkedin: { icon: '💼', color: '#0077b5', name: 'LinkedIn' },
+                youtube: { icon: '📹', color: '#ff0000', name: 'YouTube' },
+                website: { icon: '🌐', color: '#6b7280', name: 'Website' }
+            };
+
+            const activeSocials = Object.entries(socialLinks).filter(([key, value]) => value.trim() !== '');
+            
+            if (activeSocials.length === 0) return '';
+
+            let html = '<div style="text-align: center; margin: 30px 0 20px 0;">';
+            html += '<p style="margin: 0 0 15px 0; color: #6b7280; font-size: 0.9rem;">Follow us on:</p>';
+            html += '<div style="display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center;">';
+            
+            activeSocials.forEach(([platform, url]) => {
+                const social = socialIcons[platform];
+                html += `
+                    <a href="${url}" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: ${social.color}; color: white; border-radius: 8px; text-decoration: none; font-size: 18px; transition: transform 0.2s ease;" 
+                       onmouseover="this.style.transform='scale(1.1)'" 
+                       onmouseout="this.style.transform='scale(1)'"
+                       title="${social.name}">
+                        ${social.icon}
+                    </a>
+                `;
+            });
+            
+            html += '</div></div>';
+            return html;
+        }
+
         function showPreview() {
             const preview = document.getElementById('emailPreview');
             const container = document.getElementById('emailPreviewContainer');
@@ -1009,7 +1259,7 @@
             const senderName = document.getElementById('senderName').value || 'Your Company';
             const subject = document.getElementById('emailSubject').value || 'No Subject';
             const content = document.getElementById('emailContent').value || 'Your email content will appear here.';
-            const recipientName = document.getElementById('recipientName').value || 'John Doe';
+            const recipientName = document.getElementById('recipientName').value || 'Valued Customer';
             
             let templateHtml = generateEmailTemplate(senderName, recipientName, content, selectedTemplate);
             
@@ -1019,70 +1269,105 @@
         }
 
         function generateEmailTemplate(senderName, recipientName, content, template) {
-            const logoSrc = selectedFiles.logo ? URL.createObjectURL(selectedFiles.logo) : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iMTAiIGZpbGw9IiM0RjQ2RTUiLz4KPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIwLjNlbSI+TDwvdGV4dD4KPHN2Zz4K';
+            const logoSrc = selectedFiles.logo ? URL.createObjectURL(selectedFiles.logo) : '';
+            const currentDate = new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
             
-            const currentDate = new Date().toLocaleDateString();
-            const formattedContent = content.split('\n').map(p => p.trim()).filter(p => p).map(p => `<p style="margin: 0 0 15px 0; line-height: 1.6;">${p}</p>`).join('');
+            const formattedContent = content.split('\n').map(p => p.trim()).filter(p => p).map(p => `<p style="margin: 0 0 16px 0; line-height: 1.6;">${p}</p>`).join('');
+            
+            const showAutomated = document.getElementById('showAutomatedMessage').checked;
+            const socialMediaHtml = getSocialMediaHtml();
             
             let templateStyles = {
-                business: {
-                    primary: '#1e40af',
-                    secondary: '#3b82f6',
+                executive: {
+                    primary: '#1a1a2e',
+                    secondary: '#16213e',
                     background: '#f8faff',
-                    text: '#1f2937'
+                    text: '#1f2937',
+                    accent: '#d4af37'
                 },
                 creative: {
-                    primary: '#db2777',
-                    secondary: '#ec4899',
-                    background: '#fdf2f8',
-                    text: '#831843'
+                    primary: '#667eea',
+                    secondary: '#764ba2',
+                    background: '#faf5ff',
+                    text: '#4c1d95',
+                    accent: '#8b5cf6'
                 },
                 minimal: {
-                    primary: '#6b7280',
-                    secondary: '#9ca3af',
+                    primary: '#bdc3c7',
+                    secondary: '#2c3e50',
                     background: '#f9fafb',
-                    text: '#374151'
+                    text: '#374151',
+                    accent: '#6b7280'
                 },
                 modern: {
-                    primary: '#059669',
-                    secondary: '#10b981',
+                    primary: '#11998e',
+                    secondary: '#38ef7d',
                     background: '#f0fdf4',
-                    text: '#065f46'
+                    text: '#065f46',
+                    accent: '#10b981'
                 }
             };
 
-            const colors = templateStyles[template] || templateStyles.business;
+            const colors = templateStyles[template] || templateStyles.executive;
+
+            // Enhanced logo HTML with better embedding for Gmail
+            let logoHtml = '';
+            if (logoSrc) {
+                logoHtml = `<img src="${logoSrc}" alt="${senderName}" style="width: 80px; height: 80px; border-radius: 12px; margin-bottom: 20px; background: rgba(255,255,255,0.2); padding: 8px; border: 2px solid rgba(255,255,255,0.3);">`;
+            } else {
+                const firstLetter = senderName.charAt(0).toUpperCase();
+                logoHtml = `<div style="width: 80px; height: 80px; border-radius: 12px; margin: 0 auto 20px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; color: white; border: 2px solid rgba(255,255,255,0.3);">${firstLetter}</div>`;
+            }
 
             return `
-                <div style="max-width: 600px; margin: 0 auto; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;">
-                    <div style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary}); padding: 40px 30px; text-align: center; border-radius: 12px 12px 0 0;">
-                        <img src="${logoSrc}" alt="Logo" style="width: 60px; height: 60px; border-radius: 10px; margin-bottom: 20px; background: white; padding: 8px;">
-                        <h1 style="color: white; margin: 0; font-size: 1.8rem; font-weight: 700;">${senderName}</h1>
-                    </div>
-                    
-                    <div style="background: white; padding: 40px 30px; border-left: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb;">
-                        <h2 style="color: ${colors.primary}; margin: 0 0 10px 0; font-size: 1.1rem;">Hello ${recipientName},</h2>
-                        <div style="color: ${colors.text}; font-size: 1rem; line-height: 1.6;">
-                            ${formattedContent}
+                <div style="max-width: 600px; margin: 0 auto; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f5; padding: 20px;">
+                    <div style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+                        <div style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary}); padding: 40px 30px; text-align: center;">
+                            ${logoHtml}
+                            <h1 style="color: white; margin: 0; font-size: 1.8rem; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">${senderName}</h1>
                         </div>
-                        ${selectedFiles.attachments.length > 0 ? `
-                        <div style="margin-top: 30px; padding: 20px; background: ${colors.background}; border-radius: 8px; border-left: 4px solid ${colors.primary};">
-                            <h3 style="margin: 0 0 15px 0; color: ${colors.primary}; font-size: 1rem;">📎 Attachments</h3>
-                            ${selectedFiles.attachments.map(file => `<div style="margin: 5px 0; color: ${colors.text};">• ${file.name}</div>`).join('')}
+                        
+                        <div style="padding: 40px 30px; background: white;">
+                            <h2 style="color: ${colors.primary}; margin: 0 0 20px 0; font-size: 1.2rem; font-weight: 600;">Hello ${recipientName},</h2>
+                            <div style="color: ${colors.text}; font-size: 1rem; line-height: 1.6;">
+                                ${formattedContent}
+                            </div>
+                            
+                            ${selectedFiles.attachments.length > 0 ? `
+                            <div style="margin-top: 30px; padding: 20px; background: ${colors.background}; border-radius: 12px; border-left: 4px solid ${colors.accent};">
+                                <h3 style="margin: 0 0 15px 0; color: ${colors.primary}; font-size: 1rem;">📎 Attachments</h3>
+                                ${selectedFiles.attachments.map(file => `<div style="margin: 5px 0; color: ${colors.text};">• ${file.name}</div>`).join('')}
+                            </div>
+                            ` : ''}
+                            
+                            ${socialMediaHtml}
                         </div>
-                        ` : ''}
-                    </div>
-                    
-                    <div style="background: ${colors.background}; padding: 30px; text-align: center; border-radius: 0 0 12px 12px; border: 1px solid #e5e7eb; border-top: none;">
-                        <p style="margin: 0 0 15px 0; color: ${colors.text}; font-size: 0.9rem;">
-                            Best regards,<br>
-                            <strong>${senderName}</strong>
-                        </p>
-                        <div style="border-top: 1px solid #e5e7eb; padding-top: 20px; margin-top: 20px;">
-                            <p style="margin: 0; color: #6b7280; font-size: 0.8rem;">
-                                This email was sent on ${currentDate}<br>
-                                © ${new Date().getFullYear()} ${senderName}. All rights reserved.
+                        
+                        <div style="background: ${colors.background}; padding: 30px; text-align: center; border-top: 1px solid #e5e7eb;">
+                            <p style="margin: 0 0 15px 0; color: ${colors.text}; font-size: 1rem; font-weight: 500;">
+                                Best regards,<br>
+                                <strong style="color: ${colors.primary};">${senderName} Team</strong>
                             </p>
+                            
+                            ${showAutomated ? `
+                            <div style="border-top: 1px solid #e5e7eb; padding-top: 20px; margin-top: 20px;">
+                                <p style="margin: 0; color: #9ca3af; font-size: 0.85rem;">
+                                    This is an automated email. Please do not reply directly to this message.<br>
+                                    If you have questions, please contact our support team.
+                                </p>
+                            </div>
+                            ` : ''}
+                            
+                            <div style="border-top: 1px solid #e5e7eb; padding-top: 15px; margin-top: 15px;">
+                                <p style="margin: 0; color: #6b7280; font-size: 0.8rem;">
+                                    © ${new Date().getFullYear()} ${senderName}. All rights reserved.<br>
+                                    Email sent on ${currentDate}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1118,7 +1403,6 @@
             
             addLogEntry(recipientEmail, 'pending', 'Preparing email...');
             
-            // Simulate sending process
             setTimeout(() => {
                 const formData = new FormData();
                 populateFormData(formData, recipientEmail);
@@ -1195,7 +1479,7 @@
                 })
                 .finally(() => {
                     currentIndex++;
-                    setTimeout(sendNextEmail, 500); // Delay between emails
+                    setTimeout(sendNextEmail, 750);
                 });
             }
             
@@ -1209,6 +1493,18 @@
             formData.append('company_name', document.getElementById('senderName').value);
             formData.append('email_content', document.getElementById('emailContent').value);
             formData.append('email_type', selectedTemplate);
+            
+            // Email options
+            formData.append('show_automated_message', document.getElementById('showAutomatedMessage').checked ? '1' : '0');
+            formData.append('include_unsubscribe', document.getElementById('includeUnsubscribe').checked ? '1' : '0');
+            
+            // Social media links
+            formData.append('facebook', document.getElementById('facebook').value);
+            formData.append('twitter', document.getElementById('twitter').value);
+            formData.append('instagram', document.getElementById('instagram').value);
+            formData.append('linkedin', document.getElementById('linkedin').value);
+            formData.append('youtube', document.getElementById('youtube').value);
+            formData.append('website', document.getElementById('website').value);
             
             // SMTP settings
             formData.append('smtp_host', document.getElementById('smtpHost').value);
@@ -1240,9 +1536,9 @@
             };
             
             entry.innerHTML = `
-                <span>${statusIcon[status]}</span>
-                <span style="flex: 1;">${email}</span>
-                <span class="status-${status}">${message}</span>
+                <span style="font-size: 1.2rem;">${statusIcon[status]}</span>
+                <span style="flex: 1; font-weight: 500;">${email}</span>
+                <span class="status-${status}" style="font-weight: 500;">${message}</span>
             `;
             
             emailLog.appendChild(entry);
@@ -1258,9 +1554,9 @@
                 };
                 
                 entry.innerHTML = `
-                    <span>${statusIcon[status]}</span>
-                    <span style="flex: 1;">${email}</span>
-                    <span class="status-${status}">${message}</span>
+                    <span style="font-size: 1.2rem;">${statusIcon[status]}</span>
+                    <span style="flex: 1; font-weight: 500;">${email}</span>
+                    <span class="status-${status}" style="font-weight: 500;">${message}</span>
                 `;
             }
         }
@@ -1283,10 +1579,16 @@
             
             // Reset forms
             document.querySelectorAll('input, textarea, select').forEach(field => {
-                if (field.type !== 'file') {
+                if (field.type === 'checkbox') {
+                    field.checked = field.id === 'showAutomatedMessage'; // Keep automated message checked by default
+                } else if (field.type !== 'file') {
                     field.value = '';
                 }
             });
+            
+            // Reset default values
+            document.getElementById('smtpHost').value = 'smtp.hostinger.com';
+            document.getElementById('smtpPort').value = '587';
             
             // Reset UI
             document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
@@ -1311,10 +1613,6 @@
             setupFileUpload('logoUpload', 'logoFile', 'logoPreview', 'logo');
             setupFileUpload('attachmentUpload', 'attachmentFiles', 'attachmentPreview', 'attachments');
             setupFileUpload('emailListUpload', 'emailListFile', 'emailListPreview', 'emailList');
-            
-            // Set default SMTP values
-            document.getElementById('smtpHost').value = 'smtp.hostinger.com';
-            document.getElementById('smtpPort').value = '587';
         });
     </script>
 </body>
